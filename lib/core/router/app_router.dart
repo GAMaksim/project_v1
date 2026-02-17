@@ -1,12 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
-import '../../ui/screens/onboarding/onboarding_screen.dart';
-import '../../ui/screens/schedule/schedule_setup_screen.dart';
-import '../../ui/screens/home/home_screen.dart';
-import '../../ui/screens/soundscapes/soundscapes_screen.dart';
-import '../../ui/screens/statistics/statistics_screen.dart';
-import '../../ui/screens/settings/settings_screen.dart';
-import '../../ui/shared/app_bottom_nav.dart';
+import 'package:zzz/ui/screens/onboarding/onboarding_screen.dart';
+import 'package:zzz/ui/screens/schedule/schedule_setup_screen.dart';
+import 'package:zzz/ui/screens/home/home_screen.dart';
+import 'package:zzz/ui/screens/soundscapes/soundscapes_screen.dart';
+import 'package:zzz/ui/screens/statistics/statistics_screen.dart';
+import 'package:zzz/ui/screens/settings/settings_screen.dart';
+import 'package:zzz/ui/shared/app_bottom_nav.dart';
 
 // Shell route key for bottom navigation
 final _shellNavigatorKey = GlobalKey<NavigatorState>();

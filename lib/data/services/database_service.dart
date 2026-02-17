@@ -4,6 +4,10 @@ import '../models/sleep_schedule.dart';
 import '../models/sleep_record.dart';
 
 class DatabaseService {
+  static final DatabaseService _instance = DatabaseService._internal();
+  factory DatabaseService() => _instance;
+  DatabaseService._internal();
+
   static const String _settingsBox = 'settings';
   static const String _scheduleBox = 'schedule';
   static const String _recordsBox = 'records';

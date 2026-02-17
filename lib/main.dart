@@ -1,40 +1,40 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:go_router/go_router.dart';
 import 'core/theme/app_theme.dart';
 import 'core/router/app_router.dart';
 import 'data/services/database_service.dart';
 
+late final GoRouter _router;
+
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
 
-  // Initialize Hive database
+  // Initialize Hive database (singleton)
   final db = DatabaseService();
   await db.initHive();
 
-  // Check onboarding status
+  // Check onboarding status and create router once
   final onboardingCompleted = db.settings.onboardingCompleted;
+  _router = createRouter(onboardingCompleted: onboardingCompleted);
 
   runApp(
     ProviderScope(
-      child: ZzzApp(onboardingCompleted: onboardingCompleted),
+      child: const ZzzApp(),
     ),
   );
 }
 
 class ZzzApp extends StatelessWidget {
-  final bool onboardingCompleted;
-
-  const ZzzApp({super.key, required this.onboardingCompleted});
+  const ZzzApp({super.key});
 
   @override
   Widget build(BuildContext context) {
-    final router = createRouter(onboardingCompleted: onboardingCompleted);
-
     return MaterialApp.router(
       title: 'Zzz',
       debugShowCheckedModeBanner: false,
       theme: AppTheme.lightTheme,
-      routerConfig: router,
+      routerConfig: _router,
     );
   }
 }
