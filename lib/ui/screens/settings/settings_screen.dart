@@ -5,6 +5,7 @@ import 'package:go_router/go_router.dart';
 import 'package:zzz/core/theme/app_colors.dart';
 import 'package:zzz/core/theme/app_text_styles.dart';
 import 'package:zzz/providers/settings_provider.dart';
+import 'package:zzz/ui/widgets/premium_paywall.dart';
 
 class SettingsScreen extends ConsumerWidget {
   const SettingsScreen({super.key});
@@ -76,7 +77,19 @@ class SettingsScreen extends ConsumerWidget {
 
               // === Premium ===
               _SectionHeader(title: 'Subscription'),
-              Container(
+              GestureDetector(
+                onTap: settings.isPremium
+                    ? null
+                    : () async {
+                        final purchased =
+                            await PremiumPaywall.show(context);
+                        if (purchased == true) {
+                          ref
+                              .read(settingsProvider.notifier)
+                              .setPremium(true);
+                        }
+                      },
+                child: Container(
                 padding: const EdgeInsets.all(20),
                 decoration: BoxDecoration(
                   gradient: LinearGradient(
@@ -134,6 +147,7 @@ class SettingsScreen extends ConsumerWidget {
                         size: 18,
                       ),
                   ],
+                ),
                 ),
               ).animate().fadeIn(duration: 400.ms, delay: 200.ms),
 

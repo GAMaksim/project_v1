@@ -7,64 +7,16 @@ import 'package:zzz/core/constants/sounds.dart';
 import 'package:zzz/providers/audio_provider.dart';
 import 'package:zzz/providers/settings_provider.dart';
 import 'package:zzz/ui/widgets/music_preset_tile.dart';
+import 'package:zzz/ui/widgets/premium_paywall.dart';
 
 class SoundscapesScreen extends ConsumerWidget {
   const SoundscapesScreen({super.key});
 
-  void _showPremiumDialog(BuildContext context) {
-    showDialog(
-      context: context,
-      builder: (ctx) => AlertDialog(
-        backgroundColor: AppColors.cream,
-        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
-        title: Text(
-          '🔒 Premium Sound',
-          style: AppTextStyles.headlineMedium,
-          textAlign: TextAlign.center,
-        ),
-        content: Column(
-          mainAxisSize: MainAxisSize.min,
-          children: [
-            Text(
-              'Unlock all 8 premium soundscapes for deeper, more restful sleep.',
-              style: AppTextStyles.bodyMedium.copyWith(
-                color: AppColors.textSecondary,
-              ),
-              textAlign: TextAlign.center,
-            ),
-            const SizedBox(height: 20),
-            SizedBox(
-              width: double.infinity,
-              child: ElevatedButton(
-                onPressed: () => Navigator.pop(ctx),
-                style: ElevatedButton.styleFrom(
-                  backgroundColor: AppColors.deepIndigo,
-                  foregroundColor: Colors.white,
-                  padding: const EdgeInsets.symmetric(vertical: 14),
-                  shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(14),
-                  ),
-                ),
-                child: Text(
-                  'Upgrade to Premium',
-                  style: AppTextStyles.labelLarge.copyWith(color: Colors.white),
-                ),
-              ),
-            ),
-            const SizedBox(height: 8),
-            TextButton(
-              onPressed: () => Navigator.pop(ctx),
-              child: Text(
-                'Maybe later',
-                style: AppTextStyles.bodySmall.copyWith(
-                  color: AppColors.textSecondary,
-                ),
-              ),
-            ),
-          ],
-        ),
-      ),
-    );
+  void _showPremiumPaywall(BuildContext context, WidgetRef ref) async {
+    final purchased = await PremiumPaywall.show(context);
+    if (purchased == true) {
+      ref.read(settingsProvider.notifier).setPremium(true);
+    }
   }
 
   @override
@@ -169,7 +121,7 @@ class SoundscapesScreen extends ConsumerWidget {
                       isLocked: isLocked,
                       onTap: () async {
                         if (isLocked) {
-                          _showPremiumDialog(context);
+                          _showPremiumPaywall(context, ref);
                         } else {
                           ref.read(audioProvider.notifier).playSound(preset);
                         }
