@@ -7,6 +7,7 @@ import 'package:zzz/core/theme/app_text_styles.dart';
 import 'package:zzz/core/utils/sleep_score.dart';
 import 'package:zzz/data/models/sleep_schedule.dart';
 import 'package:zzz/providers/schedule_provider.dart';
+import 'package:zzz/data/services/notification_service.dart';
 import 'package:zzz/ui/widgets/day_selector.dart';
 import 'package:zzz/ui/widgets/recommendation_card.dart';
 import 'package:zzz/ui/shared/primary_button.dart';
@@ -85,6 +86,9 @@ class _ScheduleSetupScreenState extends ConsumerState<ScheduleSetupScreen> {
     );
 
     await ref.read(scheduleProvider.notifier).updateAllSchedules(schedules);
+
+    // Schedule push notifications
+    await NotificationService().scheduleAll(schedules);
 
     if (mounted) {
       context.go('/');
